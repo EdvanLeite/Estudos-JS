@@ -1,46 +1,37 @@
 function validateFields() {
     errorEmail();
+    errorPassword();
     disabledButton();
 }
 
-function errorEmail(){
-    const email = document.getElementById("email").value;
-    if(!email){
-        document.getElementById("emailVoid").style.top = "20px";
-    }else{
-        document.getElementById("emailVoid").style.top = "-50px";
-    }
+function errorEmail() {
+    const email = form.email().value;
 
-    if(!emailValid(email)){
-        document.getElementById("emailInvalid").style.top = "20px";
-    }else{
-        document.getElementById("emailInvalid").style.top = "-50px";
+    if (!email) {
+        form.emailVoid().style.top = "20px";
+    } else {
+        form.emailVoid().style.top = "-50px";
     }
-
+    if (!emailValid(email) && email) {
+        form.emailValid().style.top = "20px";
+    } else {
+        form.emailValid().style.top = "-50px";
+    }
 }
 
-function errorPassword(){
-    const password = document.getElementById("password").value;
-    if(!password){
-        document.getElementById("passwordVoid").style.top = "20px";
-    }else{
-        document.getElementById("passwordVoid").style.top = "-50px";
-    }
+function errorPassword() {
+    const password = form.password().value;
 
-    if(!passwordValid()){
-        document.getElementById("passwordInvalid").style.top = "20px";
-    }else{
-        document.getElementById("passwordInvalid").style.top = "-50px";
+    if (!passwordValid(password)) {
+        form.passwordValid().style.top = "20px";
+    } else {
+        form.passwordValid().style.top = "-50px";
     }
-
 }
 
-
-
-
-function disabledButton(){
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+function disabledButton() {
+    const email = form.email().value;
+    const password = form.password().value;
 
     const emailV = emailValid(email);
     const passwordV = passwordValid(password);
@@ -56,14 +47,37 @@ function emailValid(email) {
     return validarEmail(email);
 }
 
-function validarEmail(email) {
-    return /\S+@\S+\.\S+/.test(email);
+
+function passwordValid(password) {
+    return !!password; 
 }
 
-function passwordValid() {
-    const password = document.getElementById("password").value;
-    if (!password) {
-        return false;
+const form = {
+    email: () => document.getElementById("email"),
+    password: () => document.getElementById("password"),
+    emailVoid: () => document.getElementById("emailVoid"),
+    emailValid: () => document.getElementById("emailInvalid"),
+    passwordValid: () => document.getElementById("passwordInvalid")
+};
+
+function login(){
+    firebase.auth().signInWithEmailAndPassword(form.email().value, form.password().value).then(response =>{
+        window.location.href = "pages/home/home.html";
+    }).catch(error=>{
+        alert(error.code);
+    })
+}
+
+function getMenssageError(error){
+    if(error.code == "auth/user-not-found"){
+        return "usuario não encontrado" 
+    }else{
+        return error.code;
     }
-    return true;
+}
+    
+
+
+function register(){
+    window.location.href = "pages/register/register.html";
 }

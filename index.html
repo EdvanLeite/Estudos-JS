@@ -3,35 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Gastos</title>
+    <title>Login - Controle de Gastos</title>
     <link rel="stylesheet" href="index.css">
     <script src = "index.js"></script>
+    <script src = "validations.js"></script>
+    <script src = "https://www.gstatic.com/firebasejs/11.4.0/firebase-app-compat.js"></script>
+    <script src = "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth-compat.js"></script>
+        <script> const firebaseConfig = {
+            apiKey: "AIzaSyCZD-_jswX6ug7Aviye2lUL2sNcMQmPhq0",
+            authDomain: "controle-de-gastos-ea57e.firebaseapp.com",
+            projectId: "controle-de-gastos-ea57e",
+            storageBucket: "controle-de-gastos-ea57e.firebasestorage.app",
+            messagingSenderId: "1064237544218",
+            appId: "1:1064237544218:web:298453eefb4b9e5056b2a3",
+            measurementId: "G-DTKN6ZWY6Q"
+            }
+            firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
 <body>
     
     <form>
         <div>
         <label>Digite seu E-mail</label>
-        <input type="email" name = "email" oninput="validateFields()" placeholder="Email">
+        <input type="email" id = "email" name = "email" oninput="validateFields()" placeholder="Email">
         </div>
-        <div Class = "error" id = "emailVoid">Email é Obrigatorio!</div>
-        <div Class = "error" id = "emailInvalid">Email Invalido!</div>
+        <div class = "error" id = "emailVoid">Email é Obrigatorio!</div>
+        <div class = "error" id = "emailInvalid">Email Invalido!</div>
         <div>
         <label>Digite sua senha</label>
         <input type="password" name = "senha" id = "password" oninput="validateFields()"  placeholder="Senha">
         </div>
-        <div Class = "error" id = "passwordVoid">Senha é Obrigatorio!</div>
-        <div Class = "error" id = "passwordInvalid">Senha Invalido!</div>
+        <div class = "error" id = "passwordInvalid">Senha Invalida!</div>
         <div>
         <button type ="button" class = "clear" id = "recoveryPassButton" disabled = "true">Recuperar Senha</button>
         </div>
-        <button type ="button" class = "slid" id = "loginButton" disabled="true">entrar</button>
+        <button type ="button" class = "slid" id = "loginButton" disabled="true" onclick="login()">entrar</button>
         <div>
-        <button type ="button" class = "solid">Registrar</button>
+        <button type ="button" class = "solid" onclick="register()">Registrar</button>
         </div>
-
-
     </form>
     
+
 </body>
 </html>
