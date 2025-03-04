@@ -1,3 +1,4 @@
+
 function validateFields() {
     errorEmail();
     errorPassword();
@@ -60,24 +61,51 @@ const form = {
     passwordValid: () => document.getElementById("passwordInvalid")
 };
 
-function login(){
-    firebase.auth().signInWithEmailAndPassword(form.email().value, form.password().value).then(response =>{
-        window.location.href = "pages/home/home.html";
-    }).catch(error=>{
-        alert(error.code);
-    })
+function login() {
+    showLoading();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(response => {
+            hideLoading();
+            window.location.href = "pages/home/home.html";
+        })
+        .catch(error => {
+            hideLoading();
+            alert(getMessageError(error));  
+        });
 }
 
-function getMenssageError(error){
-    if(error.code == "auth/user-not-found"){
-        return "usuario não encontrado" 
-    }else{
-        return error.code;
+function getMessageError(error) {
+    if (error.code === "auth/user-not-found") {
+        return "Usuário não encontrado";
+    } else if (error.code === "auth/wrong-password") {
+        return "Senha incorreta";
+    } else if (error.code === "auth/invalid-email") {
+        return "Email inválido";
+    } else {
+        return "Erro: " + error.message;
     }
 }
-    
-
 
 function register(){
     window.location.href = "pages/register/register.html";
 }
+
+function recoveryPassword(){
+    showLoading();
+    firebase.auth().sendPasswordResetEmail(form.email().value).then(() => {
+        hideLoading();
+        alert("Email Enviado com sucesso");
+    }).catch( error =>{
+        hideLoading();
+        alert(getMessageError(error));
+    })
+}
+
+firebase.auth().onAuthStateChanged(user =>{
+    if (user){
+        window.location.href = "pages/home/home.html";
+    }
+})
